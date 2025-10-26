@@ -1,0 +1,126 @@
+<section class="student-list-section">
+    <div class="btn-container">
+        <button class="add-btn" (click)="addEtudiant()" type="button">
+            <i class="fas fa-plus"></i> Add Student
+        </button>
+    </div>
+
+    <!-- Search input au-dessus de la table -->
+    <div class="search-container" role="search" aria-label="Rechercher un étudiant">
+        <label for="search" class="sr-only">Rechercher un étudiant</label>
+
+        <div class="search-field"> <!-- wrap for styling: icon + input + clear -->
+            <!-- search icon (inline SVG to avoid external dependencies) -->
+            <span class="search-icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </span>
+
+            <!-- input uses a template reference so we can read/clear its value from the template -->
+            <input
+                 [formControl]="searchControl"
+                id="search"
+                #searchInput
+                type="text"
+                class="search-input"
+                placeholder="Rechercher un étudiant..."
+                aria-label="Rechercher un étudiant"
+                autocomplete="off"
+            />
+
+            <!-- clear button: hidden when input is empty; calls onSearch('') and focuses back -->
+            <button
+                type="button"
+                class="clear-btn"
+                aria-label="Effacer la recherche"
+                [attr.hidden]="!searchInput.value ? true : null"
+                (click)="clearSearch(); searchInput.focus()"
+            >
+                <span aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </span>
+            </button>
+        </div>
+    </div>
+    <!-- ajouter onSearch(term: string) dans le component pour filtrer la liste -->
+
+    <div class="table-container">
+        <div class="student-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Matieres</th>
+                        <th style="text-align:right">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let etudiant of etudiants" (click)="onSelectEtudiant(etudiant)">
+                        <td class="col-avatar" data-label="Photo">
+                            <img [src]="etudiant.image" [alt]="etudiant.prenom + ' ' + etudiant.nom + ' photo'" class="avatar" />
+                        </td>
+
+                        <td class="col-name" data-label="Name">
+                            {{ etudiant.prenom }} {{ etudiant.nom }}
+                            <div class="pill">ID: {{ etudiant.id }}</div>
+                        </td>
+
+                        <td class="col-email" data-label="Email">
+                            {{ etudiant.email }}
+                        </td>
+
+                        <td class="col-course" data-label="matiere">
+                            {{ etudiant.matiere || '-' }}
+                        </td>
+
+                        <td class="col-actions" data-label="Actions">
+                            <button
+                                class="row-btn delete-btn"
+                                type="button"
+                                (click)="onSelectEtudiant(etudiant)"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg> View
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+<!-- Pagination -->
+<nav class="pagination" role="navigation" aria-label="Pagination">
+    <div class="per-page">
+        <label for="limit" class="sr-only">Éléments par page</label>
+        <select
+            id="limit"
+            aria-label="Nombre d'éléments par page"
+            (change)="onLimitChange($event)"
+            [value]="limit"
+        >
+            <option [value]="5">5</option>
+            <option [value]="10">10</option>
+            <option [value]="15">15</option>
+            <option [value]="20">20</option>
+        </select>
+    </div>
+
+    <button (click)="prevPage()" [disabled]="page === 1" type="button" aria-label="Page précédente">← Précédent</button>
+    <span aria-live="polite" aria-atomic="true">Page {{ page }}</span>
+    <button (click)="nextPage()" [disabled]="page * limit >= total" type="button" aria-label="Page suivante">Suivant →</button>
+</nav>
+</section>

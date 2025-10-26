@@ -1,0 +1,219 @@
+// Dashboard - uses global tokens from styles.scss
+@use "sass:color";
+@import '../../../styles.scss';
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    align-items: start;
+    @extend .container;
+    margin-top: 40px;
+}
+
+.card {
+    @extend %card-base;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    min-height: 120px;
+    overflow: hidden;
+    position: relative;
+    isolation: isolate;
+
+    &:hover {
+        @extend %card-hover;
+    }
+
+    &[role="region"]:focus-visible {
+        outline: 3px solid rgba($accent, 0.2);
+        outline-offset: 4px;
+        box-shadow: 0 0 0 6px rgba($accent, 0.06);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        right: -20%;
+        bottom: -30%;
+        width: 60%;
+        height: 60%;
+        background: radial-gradient(closest-side, rgba(255, 255, 255, 0.18), transparent 60%),
+                    radial-gradient(closest-side, rgba($accent, 0.04), transparent 60%);
+        transform: rotate(-25deg);
+        pointer-events: none;
+        opacity: 0.8;
+    }
+}
+
+.card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-icon {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 52px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    color: white;
+    box-shadow: 0 8px 20px rgba($accent, 0.08);
+
+    svg {
+        width: 26px;
+        height: 26px;
+        display: block;
+        stroke: currentColor;
+        fill: none;
+    }
+}
+
+.card-student .card-icon {
+    background: $accent;
+}
+
+.card-users .card-icon {
+    background: linear-gradient(135deg, $accent 0%, color.adjust($accent, $lightness: -8%) 100%);
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: $text;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.card-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: $text;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.card-meta {
+    font-size: 0.85rem;
+    color: $muted-text;
+    font-weight: 500;
+}
+
+// Notifications Section
+.notifications-section {
+    @extend .container;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $text;
+        margin-bottom: 1.5rem;
+    }
+}
+
+.notifications-table-wrapper {
+    @extend %card-base;
+    overflow: hidden;
+
+    .notifications-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        thead {
+            th {
+                padding: 14px 16px;
+                background: $muted-bg;
+                border-bottom: 1px solid rgba(15, 23, 35, 0.06);
+                color: $text;
+                font-size: 0.9rem;
+                font-weight: 700;
+                text-align: left;
+                letter-spacing: -0.01em;
+            }
+        }
+
+        tbody {
+            .notification-row {
+                transition: background $transition;
+
+                &:hover {
+                    background: $hover-bg;
+                }
+
+                td {
+                    padding: 14px 16px;
+                    border-bottom: 1px solid rgba(15, 23, 35, 0.04);
+                    color: $text;
+                    font-size: 0.95rem;
+                }
+            }
+
+            // Color coding for notification types
+            .notification-add {
+                border-left: 4px solid $success;
+            }
+
+            .notification-update {
+                border-left: 4px solid #3b82f6; // Blue
+            }
+
+            .notification-delete {
+                border-left: 4px solid $error;
+            }
+        }
+    }
+}
+
+.action-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+    }
+
+    &.action-add {
+        background: rgba($success, 0.1);
+        color: color.adjust($success, $lightness: -10%);
+        border: 1px solid rgba($success, 0.2);
+    }
+
+    &.action-update {
+        background: rgba(#3b82f6, 0.1);
+        color: color.adjust(#3b82f6, $lightness: -10%);
+        border: 1px solid rgba(#3b82f6, 0.2);
+    }
+
+    &.action-delete {
+        background: rgba($error, 0.1);
+        color: color.adjust($error, $lightness: -10%);
+        border: 1px solid rgba($error, 0.2);
+    }
+}
+
+@media (max-width: 640px) {
+    .notifications-section {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .notifications-table-wrapper {
+        overflow-x: auto;
+        
+        .notifications-table {
+            min-width: 600px;
+        }
+    }
+}

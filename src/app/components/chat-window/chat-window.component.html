@@ -1,0 +1,58 @@
+<div class="chat-window" *ngIf="selectedUser; else noUserSelected">
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <div class="user-avatar">
+      {{ selectedUser.prenom?.charAt(0) }}{{ selectedUser.nom?.charAt(0) }}
+    </div>
+    <div class="user-info">
+      <div class="user-name">{{ selectedUser.prenom }} {{ selectedUser.nom }}</div>
+      <div class="user-status">{{ selectedUser.email }}</div>
+    </div>
+  </div>
+
+  <!-- Messages Container -->
+  <div class="messages-container" #messagesContainer>
+    <div 
+      *ngFor="let message of messages" 
+      class="message"
+      [ngClass]="{ 'sent': isSentByMe(message), 'received': !isSentByMe(message) }">
+      
+      <div class="message-bubble">
+        <div class="message-content">{{ message.content }}</div>
+        <div class="message-time">{{ message.timestamp | date:'short' }}</div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="messages.length === 0" class="no-messages">
+      Aucun message. Commencez la conversation!
+    </div>
+  </div>
+
+  <!-- Message Input - ALWAYS VISIBLE -->
+  <div class="message-input">
+    <input 
+      type="text" 
+      [(ngModel)]="newMessage"
+      (keyup.enter)="sendMessage()"
+      placeholder="Tapez votre message..."
+      class="input-field"
+      autocomplete="off">
+    
+    <button 
+      (click)="sendMessage()"
+      [disabled]="!newMessage.trim()"
+      class="send-button">
+      Envoyer
+    </button>
+  </div>
+</div>
+
+<!-- No user selected state -->
+<ng-template #noUserSelected>
+  <div class="no-user-selected">
+    <div class="empty-icon">💬</div>
+    <h3>Sélectionnez un utilisateur</h3>
+    <p>Choisissez un utilisateur dans la liste pour commencer à discuter</p>
+  </div>
+</ng-template>

@@ -1,0 +1,103 @@
+<div class="back-link">
+    <a [routerLink]="['/etudiant']" class="btn-back">
+        <span>← Retour à la liste des étudiants</span>
+    </a>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Chargement des détails de l'étudiant...</p>
+</div>
+
+<!-- Content - Only show when not loading -->
+<div *ngIf="!isLoading" class="etudiant-details">
+    <div class="etudiant-header">
+        <img [src]="etudiant?.image" alt="Photo étudiant" class="etudiant-image">
+        <h2>{{ etudiant?.nom }} {{ etudiant?.prenom }}</h2>
+    </div>
+    
+    <div class="etudiant-info" *ngIf="!isEditing">
+        <p><strong>Email:</strong> {{ etudiant?.email }}</p>
+        <p><strong>Matière:</strong> {{ etudiant?.matiere }}</p>
+    </div>
+
+        <form *ngIf="isEditing && etudiant" (ngSubmit)="saveEtudiant()" #etudiantForm="ngForm" class="edit-form" novalidate>
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="nom" 
+                    name="nom"
+                    [(ngModel)]="etudiant!.nom">
+            </div>
+
+            <div class="mb-3">
+                <label for="prenom" class="form-label">Prénom</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="prenom" 
+                    name="prenom"
+                    [(ngModel)]="etudiant!.prenom">
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input 
+                    type="email" 
+                    class="form-control" 
+                    id="email" 
+                    name="email"
+                    [(ngModel)]="etudiant!.email">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Matières</label>
+                <div class="matieres-grid">
+                    <div class="form-check" *ngFor="let matiere of matieres">
+                        <input 
+                            type="checkbox" 
+                            class="form-check-input" 
+                            [id]="'matiere-' + matiere" 
+                            [value]="matiere"
+                            [checked]="isMatieresChecked(matiere)"
+                            (change)="onMatiereChange(matiere, $event)">
+                        <label class="form-check-label" [for]="'matiere-' + matiere">
+                            {{matiere}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Image</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="image" 
+                    name="image"
+                    [(ngModel)]="etudiant!.image">
+            </div>
+
+            <div class="d-flex gap-2">
+                <button 
+                    type="submit" 
+                    class="btn btn-primary">
+                    Enregistrer
+                </button>
+                <button 
+                    type="button" 
+                    class="btn btn-secondary"
+                    (click)="cancelEdit()">
+                    Annuler
+                </button>
+            </div>
+        </form>
+    
+    <div class="etudiant-actions" *ngIf="!isEditing">
+        <button type="button" class="btn-edit" (click)="editEtudiant()">Modifier</button>
+        <button type="button" class="btn-delete" (click)="deleteEtudiant()">Supprimer</button>
+    </div>
+</div>

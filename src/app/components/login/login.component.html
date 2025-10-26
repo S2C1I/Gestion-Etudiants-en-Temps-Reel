@@ -1,0 +1,102 @@
+<div class="auth-container">
+    <div class="auth-card">
+        <h1>Bienvenue</h1>
+        
+        <!-- Login Form -->
+        <div *ngIf="!showRegister" class="form-container">
+            <h2>Login</h2>
+            <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input 
+                        type="email" 
+                        id="loginEmail" 
+                        name="email" 
+                        [(ngModel)]="loginData.email" 
+                        required 
+                        email
+                        class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input 
+                        type="password" 
+                        id="loginPassword" 
+                        name="password" 
+                        [(ngModel)]="loginData.password" 
+                        required 
+                        minlength="6"
+                        class="form-control">
+                </div>
+                
+                <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary">Login</button>
+            </form>
+            
+            <p class="toggle-text">
+                Vous n'avez pas de compte ? 
+                <a (click)="toggleForm()">Inscrivez-vous ici</a>
+            </p>
+        </div>
+        
+        <!-- Register Form -->
+        <div *ngIf="showRegister" class="form-container">
+            <h2>Inscription</h2>
+            <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+                <div class="form-group">
+                    <label for="registerNom">Nom</label>
+                    <input 
+                        type="text" 
+                        id="registerNom" 
+                        name="nom" 
+                        [(ngModel)]="registerData.nom" 
+                        required 
+                        class="form-control">
+                </div>
+
+                                <div class="form-group">
+                    <label for="registerPrenom">Prenom</label>
+                    <input 
+                        type="text" 
+                        id="registerPrenom" 
+                        name="prenom" 
+                        [(ngModel)]="registerData.prenom" 
+                        required 
+                        class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input 
+                        type="email" 
+                        id="registerEmail" 
+                        name="email" 
+                        [(ngModel)]="registerData.email" 
+                        required 
+                        email
+                        class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input 
+                        type="password" 
+                        id="registerPassword" 
+                        name="password" 
+                        [(ngModel)]="registerData.password" 
+                        required 
+                        minlength="6"
+                        class="form-control">
+                </div>
+
+                
+                <button type="submit" [disabled]="!registerForm.valid" class="btn btn-primary">S'inscrire</button>
+            </form>
+            
+            <p class="toggle-text">
+                Vous avez déjà un compte ? 
+                <a (click)="toggleForm()">Connectez-vous ici</a>
+            </p>
+        </div>
+    </div>
+</div>

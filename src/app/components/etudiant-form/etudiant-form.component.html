@@ -1,0 +1,79 @@
+<div class="container mt-4">
+    <h2>Ajouter un étudiant</h2>
+    <form (ngSubmit)="onSubmit()" #etudiantForm="ngForm">
+        <div class="mb-3">
+            <label for="nom" class="form-label">Nom</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="nom" 
+                name="nom"
+                [(ngModel)]="etudiant.nom" 
+                required>
+        </div>
+
+        <div class="mb-3">
+            <label for="prenom" class="form-label">Prénom</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="prenom" 
+                name="prenom"
+                [(ngModel)]="etudiant.prenom" 
+                required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input 
+                type="email" 
+                class="form-control" 
+                id="email" 
+                name="email"
+                [(ngModel)]="etudiant.email" 
+                required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Matières</label>
+            <div class="matieres-grid">
+                <div class="form-check" *ngFor="let matiere of matieres">
+                <input 
+                    type="checkbox" 
+                    class="form-check-input" 
+                    [id]="'matiere-' + matiere" 
+                    [value]="matiere"
+                    (change)="onMatiereChange(matiere, $event)">
+                <label class="form-check-label" [for]="'matiere-' + matiere">
+                    {{matiere}}
+                </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="image" 
+                name="image"
+                [(ngModel)]="etudiant.image"
+                required>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button 
+                type="submit" 
+                class="btn btn-primary">
+                Enregistrer
+            </button>
+            <button 
+                type="button" 
+                class="btn btn-secondary"
+                (click)="onCancel()">
+                Annuler
+            </button>
+        </div>
+    </form>
+</div>

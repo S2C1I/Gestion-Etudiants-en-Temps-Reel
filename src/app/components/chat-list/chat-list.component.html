@@ -1,0 +1,53 @@
+<div class="chat-list">
+  <div class="chat-list-header">
+    <h3>Messages</h3>
+    
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm"
+        (input)="filterContacts()"
+        placeholder="Rechercher..."
+        class="search-input">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+    </div>
+  </div>
+
+  <div class="user-list">
+    <div 
+      *ngFor="let contact of filteredContacts" 
+      class="user-item"
+      [class.active]="selectedUserId === contact._id || selectedUserId === contact.id"
+      (click)="selectUser(contact)">
+      
+      <div class="user-avatar" [class.student-avatar]="contact.type === 'etudiant'">
+        {{ contact.prenom?.charAt(0) }}{{ contact.nom?.charAt(0) }}
+        <!-- Unread badge -->
+        <span class="unread-badge" *ngIf="getUnreadCount(contact._id || contact.id) > 0">
+          {{ getUnreadCount(contact._id || contact.id) }}
+        </span>
+      </div>
+      
+      <div class="user-info">
+        <div class="user-name">
+          {{ contact.prenom }} {{ contact.nom }}
+          <span class="user-badge" *ngIf="contact.type === 'etudiant'">Étudiant</span>
+          <span class="user-badge admin-badge" *ngIf="contact.type === 'user'">Admin</span>
+        </div>
+        <div class="user-email">{{ contact.email }}</div>
+      </div>
+    </div>
+
+    <div *ngIf="filteredContacts.length === 0 && searchTerm" class="no-users">
+      Aucun résultat pour "{{ searchTerm }}"
+    </div>
+
+    <div *ngIf="allContacts.length === 0 && !searchTerm" class="no-users">
+      Aucun contact disponible
+    </div>
+  </div>
+</div>

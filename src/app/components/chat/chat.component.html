@@ -1,0 +1,13 @@
+<div class="chat-container">
+  <!-- Left Sidebar: User List -->
+  <app-chat-list 
+    (userSelected)="onUserSelected($event)"
+    class="chat-list-section">
+  </app-chat-list>
+
+  <!-- Right Side: Chat Window -->
+  <app-chat-window 
+    [selectedUser]="selectedUser"
+    class="chat-window-section">
+  </app-chat-window>
+</div>

@@ -1,0 +1,54 @@
+<div class="btn-container">
+    <button class="add-btn"  type="button">
+        <i class="fas fa-plus"></i> Add User
+    </button>
+</div>
+
+<div class="table-container">
+    <div class="user-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th style="text-align:right">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let user of users" >
+
+
+                    <td class="col-name" data-label="Name">
+                        {{ user.prenom }} {{ user.nom }}
+
+                    </td>
+
+                    <td class="col-email" data-label="Email">
+                        {{ user.email }}
+                    </td>
+
+                    <td class="col-course" data-label="matiere">
+                        {{ user.role  }}
+                    </td>
+
+                    <td class="col-actions" data-label="Actions">
+
+
+                        <button
+                            class="row-btn delete-btn"
+                            type="button"
+                            [routerLink]="['/user', user.id]"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg> View
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

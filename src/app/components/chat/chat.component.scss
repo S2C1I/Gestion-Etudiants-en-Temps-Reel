@@ -1,0 +1,56 @@
+@import '../../../styles.scss';
+
+.chat-container {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  height: calc(100vh - 64px - 4rem); // Full height minus navbar and padding
+  max-width: 1400px;
+  margin: 0 auto;
+  background: white;
+  box-shadow: $shadow;
+  border-radius: $radius;
+  overflow: hidden;
+
+  .chat-list-section {
+    display: block;
+    border-right: 1px solid rgba(15, 23, 35, 0.08);
+  }
+
+  .chat-window-section {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 300px 1fr;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    
+    .chat-list-section {
+      display: none;
+      
+      &.show-mobile {
+        display: block;
+      }
+    }
+
+    .chat-window-section {
+      display: block;
+    }
+  }
+}
+
+// Page wrapper
+:host {
+  display: block;
+  padding: 2rem;
+  background: $bg;
+  min-height: calc(100vh - 64px);
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}

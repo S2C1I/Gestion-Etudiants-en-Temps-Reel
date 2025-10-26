@@ -1,0 +1,70 @@
+// Toastr Override Styles - Fix z-index and display issues
+
+#toast-container {
+    z-index: 999999 !important;
+    pointer-events: none;
+    margin-top: 80px !important; // Space from top/navbar
+
+    // > div {
+    //     pointer-events: auto;
+    //     opacity: 1 !important;
+    //     box-shadow: 0 10px 30px rgba(15, 23, 35, 0.2) !important;
+    //     border-radius: 10px !important;
+    //     padding: 14px 18px !important;
+    //     font-weight: 500;
+    //     font-size: 0.95rem;
+    //     margin-bottom: 12px !important; // Space between toasts
+    //     min-width: 300px;
+    //     max-width: 400px;
+    //     display: flex !important;
+    //     align-items: center !important;
+    //     gap: 12px !important; // Space between icon and text
+    //     line-height: 1.5 !important;
+    // }
+}
+
+.toast-message {
+    flex: 1;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.toast-title {
+    font-weight: 600 !important;
+    margin-bottom: 4px !important;
+}
+
+.toast-icon {
+    flex-shrink: 0;
+    margin-right: 8px !important;
+}
+
+.toast-success {
+    background-color: #10b981 !important;
+}
+
+.toast-error {
+    background-color: #ef4444 !important;
+}
+
+.toast-info {
+    background-color: #3b82f6 !important;
+}
+
+.toast-warning {
+    background-color: #f59e0b !important;
+}
+
+.toast-progress {
+    opacity: 0.8 !important;
+    background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.toast-close-button {
+    opacity: 0.8;
+    font-weight: bold;
+    
+    &:hover {
+        opacity: 1;
+    }
+}
