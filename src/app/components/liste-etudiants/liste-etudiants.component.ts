@@ -14,8 +14,8 @@ import { SocketService } from '../../services/socket.service';
 export class ListeEtudiantsComponent implements OnInit {
 
   constructor(private etudiantsService: EtudiantsService,
-     private router: Router,
-     private socketService: SocketService) {
+    private router: Router,
+    private socketService: SocketService) {
   }
   etudiants: any[] = [];
   total = 0;
@@ -40,10 +40,37 @@ export class ListeEtudiantsComponent implements OnInit {
         this.loadEtudiants(this.currentSearch);
       });
 
-      this.socketService.onEtudiantUpdate().subscribe((data) => {
-          console.log('Received etudiant update via WebSocket:', data);
-          this.loadEtudiants(this.currentSearch);
-      });
+    // Listen for etudiant added event
+    this.socketService.onEtudiantAdded().subscribe((etudiant) => {
+      if (etudiant) {
+        console.log('Received etudiantAdded via WebSocket:', etudiant);
+        this.loadEtudiants(this.currentSearch);
+      }
+    });
+
+    // Listen for etudiant updated event
+    this.socketService.onEtudiantUpdated().subscribe((etudiant) => {
+      if (etudiant) {
+        console.log('Received etudiantUpdated via WebSocket:', etudiant);
+        this.loadEtudiants(this.currentSearch);
+      }
+    });
+
+    // Listen for etudiant deleted event
+    this.socketService.onEtudiantDeleted().subscribe((data) => {
+      if (data) {
+        console.log('Received etudiantDeleted via WebSocket:', data);
+        this.loadEtudiants(this.currentSearch);
+      }
+    });
+
+    // Keep the old listener for backward compatibility (can remove later)
+    this.socketService.onEtudiantUpdate().subscribe((data) => {
+      if (data) {
+        console.log('Received etudiantUpdate via WebSocket:', data);
+        this.loadEtudiants(this.currentSearch);
+      }
+    });
   }
 
   onSelectEtudiant(etudiant: any) {

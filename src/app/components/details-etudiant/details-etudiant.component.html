@@ -13,13 +13,15 @@
 <!-- Content - Only show when not loading -->
 <div *ngIf="!isLoading" class="etudiant-details">
     <div class="etudiant-header">
-        <img [src]="etudiant?.image" alt="Photo étudiant" class="etudiant-image">
+        <img [src]="etudiant?.photo || 'assets/default-avatar.png'" 
+             [alt]="'Photo de ' + etudiant?.prenom + ' ' + etudiant?.nom" 
+             class="etudiant-image">
         <h2>{{ etudiant?.nom }} {{ etudiant?.prenom }}</h2>
     </div>
     
     <div class="etudiant-info" *ngIf="!isEditing">
         <p><strong>Email:</strong> {{ etudiant?.email }}</p>
-        <p><strong>Matière:</strong> {{ etudiant?.matiere }}</p>
+        <p><strong>Matières:</strong> {{ etudiant?.matiere?.join(', ') || 'Aucune matière' }}</p>
     </div>
 
         <form *ngIf="isEditing && etudiant" (ngSubmit)="saveEtudiant()" #etudiantForm="ngForm" class="edit-form" novalidate>
@@ -72,13 +74,21 @@
             </div>
 
             <div class="mb-3">
-                <label for="image" class="form-label">Image</label>
+                <label for="photo" class="form-label">Photo</label>
                 <input 
-                    type="text" 
+                    type="file" 
                     class="form-control" 
-                    id="image" 
-                    name="image"
-                    [(ngModel)]="etudiant!.image">
+                    id="photo" 
+                    name="photo"
+                    accept="image/*"
+                    (change)="onFileSelected($event)">
+                <div *ngIf="previewUrl" class="mt-2">
+                    <img [src]="previewUrl" alt="Preview" class="img-thumbnail" style="max-width: 200px;">
+                </div>
+                <div *ngIf="!previewUrl && etudiant?.photo" class="mt-2">
+                    <p class="text-muted">Photo actuelle:</p>
+                    <img [src]="etudiant.photo" alt="Current photo" class="img-thumbnail" style="max-width: 200px;">
+                </div>
             </div>
 
             <div class="d-flex gap-2">

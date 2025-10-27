@@ -14,6 +14,8 @@ export class DetailsEtudiantComponent implements OnInit {
 
   isEditing = false;
   isLoading = false; // No loading needed - resolver provides data
+  selectedFile: File | null = null;
+  previewUrl: string | null = null;
 
   matieres = [
     'Anglais',
@@ -53,6 +55,20 @@ export class DetailsEtudiantComponent implements OnInit {
   }
   etudiant: any;
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   saveEtudiant() {
     console.log('saveEtudiant called');
     console.log('Etudiant data:', this.etudiant);
@@ -62,23 +78,29 @@ export class DetailsEtudiantComponent implements OnInit {
       return;
     }
 
-    // Clean the data - only send fields that should be updated
-    const updateData = {
-      nom: this.etudiant.nom,
-      prenom: this.etudiant.prenom,
-      email: this.etudiant.email,
-      matiere: this.etudiant.matiere,
-      image: this.etudiant.image
-    };
+    // Create FormData for file upload
+    const formData = new FormData();
 
-    console.log('Sending update data:', updateData);
+    // Append file if selected
+    if (this.selectedFile) {
+      formData.append('file', this.selectedFile);
+    }
 
-    this.etudiantsService.updateEtudiant(this.etudiant.id, updateData).subscribe({
+    // Append other fields
+    formData.append('nom', this.etudiant.nom);
+    formData.append('prenom', this.etudiant.prenom);
+    formData.append('email', this.etudiant.email);
+    formData.append('matiere', JSON.stringify(this.etudiant.matiere));
+
+    console.log('Sending FormData update');
+
+    this.etudiantsService.updateEtudiant(this.etudiant.id, formData).subscribe({
       next: (updatedEtudiant) => {
-
-        this.ngOnInit(); // Refresh the student details
+        console.log('Student updated successfully:', updatedEtudiant);
+        this.etudiant = updatedEtudiant;
+        this.selectedFile = null;
+        this.previewUrl = null;
         this.isEditing = false;
-
       },
       error: (error) => {
         console.error('Error updating student:', error);
@@ -91,8 +113,9 @@ export class DetailsEtudiantComponent implements OnInit {
 
   cancelEdit() {
     this.isEditing = false;
+    this.selectedFile = null;
+    this.previewUrl = null;
     this.ngOnInit(); // Reload student details to discard changes
-
   }
 
   editEtudiant() {

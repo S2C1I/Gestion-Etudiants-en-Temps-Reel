@@ -35,12 +35,24 @@ export class EtudiantsService {
     return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
-  createEtudiant(etudiant: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, etudiant, { headers: this.getHeaders() });
+  createEtudiant(formData: FormData): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+      // Don't set Content-Type - browser will set it with boundary for multipart/form-data
+    });
+
+    return this.http.post<any>(this.apiUrl, formData, { headers });
   }
 
-  updateEtudiant(id: number, etudiant: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, etudiant, { headers: this.getHeaders() });
+  updateEtudiant(id: number, formData: FormData): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+      // Don't set Content-Type - browser will set it with boundary for multipart/form-data
+    });
+
+    return this.http.put<any>(`${this.apiUrl}/${id}`, formData, { headers });
   }
 
   deleteEtudiant(id: number): Observable<any> {

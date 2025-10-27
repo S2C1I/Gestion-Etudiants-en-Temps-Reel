@@ -16,9 +16,11 @@ export class EtudiantFormComponent {
     nom: '',
     prenom: '',
     email: '',
-    matiere: [] as string[],
-    image: ''
+    matiere: [] as string[]
   };
+
+  selectedFile: File | null = null;
+  previewUrl: string | null = null;
 
   matieres = [
     'Anglais',
@@ -39,18 +41,47 @@ export class EtudiantFormComponent {
     'Technologie'
   ];
 
-  onSubmit() {
-    this.etudiantsService.createEtudiant(this.etudiant).subscribe({
-      next: (response) => {
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
 
-        // Optionally, reset the form or navigate away
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewUrl = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onSubmit() {
+    const formData = new FormData();
+
+    // Append file if selected
+    if (this.selectedFile) {
+      formData.append('file', this.selectedFile);
+    }
+
+    // Append other fields
+    formData.append('nom', this.etudiant.nom);
+    formData.append('prenom', this.etudiant.prenom);
+    formData.append('email', this.etudiant.email);
+    formData.append('matiere', JSON.stringify(this.etudiant.matiere));
+
+    this.etudiantsService.createEtudiant(formData).subscribe({
+      next: (response) => {
+        console.log('Student created successfully:', response);
+
+        // Reset the form
         this.etudiant = {
           nom: '',
           prenom: '',
           email: '',
-          matiere: [],
-          image: ''
+          matiere: []
         };
+        this.selectedFile = null;
+        this.previewUrl = null;
 
         this.router.navigate(['/etudiant']);
       },
